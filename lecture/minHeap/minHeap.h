@@ -22,7 +22,10 @@ class minHeap
         vector<int> getHeap() {return heap;} //Returns heap data for test cases
         //Implement all the following functions
         minHeap(vector<int> data){
-            
+            heap = data;
+            for(int i = data.size() - 1; i >= 0; i--){
+                siftDown(i);
+            }
         }; //Should build the heap from bottom-up
         void insert(int value); //Insert value into heap
         int removeMin(); //Removes minimum value

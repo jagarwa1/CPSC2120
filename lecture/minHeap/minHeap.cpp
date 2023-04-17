@@ -13,6 +13,7 @@ void minHeap::siftUp(int pos){
         siftUp(parent);
     }
 }
+
 void minHeap::siftDown(int pos){
     // if(pos == 0)
     //     return;
