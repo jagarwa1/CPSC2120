@@ -1,8 +1,9 @@
 /*
- * Name:
- * Date Submitted:
- * Lab Section:
- * Assignment Name:
+ * Name:            Jai Agarwal
+ * Date Submitted:  
+ * Lab Section:     002
+ * Assignment Name: lab 10: puzzles using breadth first search
+ *                          (wolf goat cabbage and water jugs)
  */
 
 #include <iostream>
