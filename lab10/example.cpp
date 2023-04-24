@@ -1,11 +1,3 @@
-/*
- * Name:            Jai Agarwal
- * Date Submitted:  4/24/2023
- * Lab Section:     002
- * Assignment Name: lab 10: puzzles using breadth first search
- *                          (wolf goat cabbage and water jugs)
- */
-
 #include <iostream>
 #include <vector>
 #include <map>
@@ -86,58 +78,79 @@ string neighbor_label(int s, int t)
   else return "Cross with " + which_cross;
 }
 
+bool positionWorks(bitset<4> position)   {
 
-//Implement this function
-void build_graph(void)
-{
-  bitset<4> currState, nextState;
-  
-  for (int i = 0; i < 16; i++) 
-  {
-    
-    currState = i;
-    nextState = currState;
-    
-    for(int n = 0; n < 4; n++) 
-    {
+   if(position[wolf] == position[goat])   {
 
-      if(currState[me] == currState[n]) // if item and me are on the same side
-      {
-        nextState[me].flip(); // i will cross sides no matter what in the next state
-        if (n != me) nextState[n].flip(); // i will bring the current item n
+       if(position[me] == position[wolf] && position[me] == position[goat])
+           return true;
 
-        bool valid = true;
-        if(nextState[goat] == nextState[wolf] && (nextState[me] != nextState[goat])) // invalid if goat and wolf are together without me
-        {          
-          valid = false;          
-        }    
-        else if(nextState[goat] == nextState[cabbage] && (nextState[me] != nextState[goat])) // invalid if goat and cabb are together without me
-        {
-          valid = false; 
-        }
+   }
+   else if(position[goat] == position[cabbage])   {
 
-        if (valid == true){
-            nbrs[currState.to_ulong()].push_back(nextState.to_ulong()); // push neighbor state to map, with key being currState
-            edge_label[make_pair(currState.to_ulong(), nextState.to_ulong())] = neighbor_label(currState.to_ulong(), nextState.to_ulong()); // long line
-        }
-        
-      }
+       if(position[me] == position[goat] && position[me] == position[cabbage])
+           return true;
 
-    }  
-  }
+   }
+   
+   else
+       return true;
+
+
+   return false;
+
 }
 
-// int main(void)
-// {
-//   build_graph();
 
-//   state start = 0, end = 15;
+void build_graph(void) {
+
+   const int items = 4;
+
+   bitset<items> ourState;
+   bitset<items> last ("1111");
+
+
+      while(ourState != last){
+
+          for(int i = 0; i < items; i++){
+
+              if(ourState[me] == ourState[i]){
+
+                  bitset<items> incState = ourState;
+                  incState[me].flip();
+                  i != me ? incState[i].flip() : false;
+
+                    if(positionWorks(incState))   {
+
+                            int temp = (int)ourState.to_ulong();
+                            int next = (int)incState.to_ulong();
+                            nbrs[temp].push_back(next);
+                            edge_label[make_pair(temp, next)] = neighbor_label(temp, next);
+
+                    }
+
+              }
+
+          }
+
+          ourState = (int)ourState.to_ulong() + 1;
+
+      }
+
+}
+
+
+int main(void)
+{
+  build_graph();
+
+  state start = 0, end = 15;
   
-//   search(start);
-//   if (visited[end])
-//     print_path (start, end);
-//   else
-//     cout << "No path!\n";
+  search(start);
+  if (visited[end])
+    print_path (start, end);
+  else
+    cout << "No path!\n";
   
-//   return 0;
-// }
+  return 0;
+}
