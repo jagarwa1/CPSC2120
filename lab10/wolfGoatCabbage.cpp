@@ -96,13 +96,13 @@ void build_graph(void)
   {
     
     currState = i;
-    nextState = currState;
     
     for(int n = 0; n < 4; n++) 
     {
 
       if(currState[me] == currState[n]) // if item and me are on the same side
       {
+        nextState = currState;
         nextState[me].flip(); // i will cross sides no matter what in the next state
         if (n != me) nextState[n].flip(); // i will bring the current item n
 
@@ -127,17 +127,17 @@ void build_graph(void)
   }
 }
 
-// int main(void)
-// {
-//   build_graph();
+int main(void)
+{
+  build_graph();
 
-//   state start = 0, end = 15;
+  state start = 0, end = 15;
   
-//   search(start);
-//   if (visited[end])
-//     print_path (start, end);
-//   else
-//     cout << "No path!\n";
+  search(start);
+  if (visited[end])
+    print_path (start, end);
+  else
+    cout << "No path!\n";
   
-//   return 0;
-// }
+  return 0;
+}

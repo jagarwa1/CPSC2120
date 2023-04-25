@@ -64,9 +64,71 @@ void print_path(state s, state t)
   }
 }
 
+
+// helper function for readability, creating nbrs, and creating edge_label
+// takes state Current, state Next, and int action which is the index for array Actions
+void cmpStates(state currState, state nextState, int action){
+  if (nextState != currState){ // if there is a change of states
+    edge_label[make_pair(currState, nextState)] = actions[action];
+    nbrs[currState].push_back(nextState);
+  }
+}
+
+//Implement this function
 void build_graph(void)
 {
-  //Implement this function
+  state currState = make_pair(0,0), nextState;
+  
+  int maxA = 3, maxB = 4;
+  int currA, currB;
+  
+  while(currState != make_pair(maxA,maxB))
+  {
+
+    currA = currState.first;
+    currB = currState.second;
+
+    // fill A
+    nextState = make_pair(maxA, currB);
+    cmpStates(currState, nextState, 0);
+
+    // fill B
+    nextState = make_pair(currA, maxB);
+    cmpStates(currState, nextState, 1);
+
+    // pour out A
+    nextState = make_pair(0, currB);
+    cmpStates(currState, nextState, 2);
+
+    // pour out B
+    nextState = make_pair(currA, 0);
+    cmpStates(currState, nextState, 3);
+
+    // pour A into B
+    if (currB + currA < maxB) // no problems, pour away
+      nextState = make_pair(0, currB + currA);
+    else if (currB + currA > maxB) 
+      nextState = make_pair(currA - (maxB - currB), maxB);
+    else    // currB + currA == maxB
+      nextState = make_pair(0, maxB);
+
+    cmpStates(currState, nextState, 4);
+
+    // pour B into A
+    if (currB + currA < maxA) // no problems, pour away
+      nextState = make_pair(currA + currB, 0);
+    else if (currB + currA > maxA) 
+      nextState = make_pair(maxA, currB - (maxA - currA));
+    else    // currA + currB == maxA
+      nextState = make_pair(maxA, 0);
+      
+    cmpStates(currState, nextState, 5);
+
+    if(currState.second == maxB)
+      currState = make_pair(currState.first + 1,0);
+    else
+        currState = make_pair(currState.first, currState.second + 1);
+  }
 }
 
 int main(void)
