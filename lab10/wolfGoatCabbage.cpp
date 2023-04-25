@@ -5,7 +5,7 @@
  * Assignment Name: lab 10: puzzles using breadth first search
  *                          (wolf goat cabbage and water jugs)
  */
-
+   
 #include <iostream>
 #include <vector>
 #include <map>
